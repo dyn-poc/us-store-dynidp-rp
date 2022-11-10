@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/dyn-poc/us-store-dynidp-rp/static/css/main.250cfa20.css",
+    "main.js": "/dyn-poc/us-store-dynidp-rp/static/js/main.d26eecb8.js",
+    "static/js/787.28cb0dcd.chunk.js": "/dyn-poc/us-store-dynidp-rp/static/js/787.28cb0dcd.chunk.js",
+    "index.html": "/dyn-poc/us-store-dynidp-rp/index.html",
+    "main.250cfa20.css.map": "/dyn-poc/us-store-dynidp-rp/static/css/main.250cfa20.css.map",
+    "main.d26eecb8.js.map": "/dyn-poc/us-store-dynidp-rp/static/js/main.d26eecb8.js.map",
+    "787.28cb0dcd.chunk.js.map": "/dyn-poc/us-store-dynidp-rp/static/js/787.28cb0dcd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.250cfa20.css",
+    "static/js/main.d26eecb8.js"
+  ]
+}
