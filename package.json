@@ -2,9 +2,8 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://github.com/dyn-poc/us-store-dynidp-rp",
+  "homepage": "https://dyn-poc.github.io/us-store-dynidp-rp",
   "dependencies": {
-    
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",
@@ -35,7 +34,6 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build -o build",
     "deploy": "gh-pages -d build"
-
   },
   "eslintConfig": {
     "extends": [
