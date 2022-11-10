@@ -2,7 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://dinavinter.github.io/o-auth-state-machine-react",
+  "homepage": "https://github.com/dyn-poc/us-store-dynidp-rp",
   "dependencies": {
     
     "@material-ui/core": "^4.12.3",

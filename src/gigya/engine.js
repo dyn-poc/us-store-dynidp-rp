@@ -67,7 +67,7 @@ export function getLanguage() {
 export function initDemoSite() {
     // log('0. Init Demo site');
     // Read configuration file and load it
-    fetch('/o-auth-state-machine-react/config/site.json')
+    fetch('/us-store-dynidp-rp/config/site.json')
         .then((res) => { return res.json(); })
         .then((out) => {
 
