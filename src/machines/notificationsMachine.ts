@@ -1,8 +1,5 @@
-import {isEmpty, omit} from "lodash/fp";
 import {NotificationResponseItem} from "../models";
-import {actions, createMachine, InterpreterFrom, MachineConfig} from "xstate";
-import {snackbarMachine} from "./snackbarMachine";
-const {assign} = actions;
+import {assign, createMachine, InterpreterFrom, MachineConfig} from "xstate";
 export interface NotificationsSchema {
 
     states: {

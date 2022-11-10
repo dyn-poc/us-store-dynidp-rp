@@ -1,11 +1,10 @@
 
 // @ts-ignore
-import {AnyState, AnyStateMachine, InterpreterFrom, State} from "xstate";
-import {AuthMachine, authMachine, AuthMachineContext, AuthMachineEvents} from "./authMachine";
+import {AnyState, AnyStateMachine, State} from "xstate";
+import {authMachine, AuthMachineContext, AuthMachineEvents} from "./authMachine";
 import {useInterpret} from "@xstate/react";
 import {MaybeLazy} from "@xstate/react/lib/types";
 
-// export declare function useInterpret<TMachine extends AnyStateMachine>(getMachine: MaybeLazy<TMachine>, ...[options, observerOrListener]: RestParams<TMachine>): InterpreterFrom<TMachine>;
 
 export function useInterpretWithLocalStorage<TMachine extends AnyStateMachine>(getMachine: MaybeLazy<TMachine>){
     const currentState = stateLocalStorage.get();

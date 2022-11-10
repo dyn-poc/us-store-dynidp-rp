@@ -1,5 +1,6 @@
-import Profile from "gigya";
-
+export interface Profile{
+    [key:string]: any
+}
 export interface IBaseEvent {
     eventName: string;
     source: string;
