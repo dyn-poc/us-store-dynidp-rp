@@ -5,19 +5,19 @@ import {stateLocalStorage} from "../machines/withLocalStorage";
 // dotenv.config();
 
 const httpClient = axios.create({
-  withCredentials: true,
+    withCredentials: true,
 });
 
 httpClient.interceptors.request.use((config) => {
-    
+
     const accessToken = stateLocalStorage.get()?.context?.token?.access_token;
     if(accessToken){
-      // @ts-ignore
-      config.headers["Authorization"] = `Bearer ${accessToken}`;
+        // @ts-ignore
+        config.headers["Authorization"] = `Bearer ${accessToken}`;
     }
-  
-  
-  return config;
+
+
+    return config;
 });
 
 export { httpClient };
