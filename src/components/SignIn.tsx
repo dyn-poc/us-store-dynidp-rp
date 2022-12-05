@@ -70,7 +70,7 @@ export default function SignIn({authService}: SignInProps) {
         defaultValues:{
             authFlow: "redirect",
             useChildContext: false,
-            redirectURL: `${window.location.origin}#/afterLogin`
+            redirectURL: `${window.location.origin}#/profile`
         }
     });
     const {message} = useSelector(authService, loginServiceSelector);

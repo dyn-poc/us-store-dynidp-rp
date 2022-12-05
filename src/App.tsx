@@ -72,8 +72,8 @@ const App = () => {
 
                     <Router>
                         <PrivateRoute default as={ProfileContainer} path={"/"} authService={authService}/>
-                        <SignIn path={"/signin"} authService={authService}/>
-                        <ProfileContainer path="/profile" authService={authService}/>
+                        <SignIn path={"#/signin"} authService={authService}/>
+                        <ProfileContainer path="#/profile" authService={authService}/>
 
                     </Router>
                 </Box>
