@@ -4,6 +4,7 @@ import {
     logout,
     performSignin,
     performSignup, performSignupWithSS,
+    performSsoLogin,
     socialLoginAsync,
     SocialLoginParams
 } from "../gigya/gigyaAuthMachine";
@@ -22,6 +23,10 @@ function toMfa(tokenDetails: any) {
 
 export const withGigya= (authMachine:AuthMachine)=>authMachine.withConfig({
     services: {
+        performSsoLogin: async (ctx, event) => {
+            const payload = omit("type", event);
+            return await performSsoLogin(payload)
+        },
         performSignup: async (ctx, event) => {
             const payload = omit("type", event);
             return await performSignup(payload)

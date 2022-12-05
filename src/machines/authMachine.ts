@@ -27,9 +27,11 @@ export interface SocialPayload {
 }
 
 export type SocialEvent = SocialPayload & { type: "SOCIAL" };
+export type SSOEvent =  { type: "SSO", authFlow: 'redirect' | 'popup', redirectURL?: string, context?: {[key:string]:any}, useChildContext?: boolean };
 export type AuthMachineEvents =
     | { type: "LOGIN" }
     | SocialEvent
+    | SSOEvent
     | { type: "LOGOUT" }
     | { type: "UPDATE" }
     | { type: "REFRESH"  }
@@ -71,7 +73,8 @@ export const authMachine = Machine<AuthMachineContext, AuthMachineSchema, AuthMa
                 entry: ["resetUser", "onUnauthorizedEntry", log('unauthorized')],
                 on: {
                     LOGIN: "login.initial",
-                    SIGNUP: "login.signup"
+                    SIGNUP: "login.signup",
+                    SSO: "login.sso"
                 },
             },
             login: {
@@ -90,6 +93,14 @@ export const authMachine = Machine<AuthMachineContext, AuthMachineSchema, AuthMa
                         entry: log('social'),
                         invoke: {
                             src: "performSocialLogin",
+                            onDone: {target: "authorized", actions: "onSuccess"},
+                            onError: {target: "initial", actions: ["onError", "logEventData"]},
+                        },
+                    }, 
+                    sso: {
+                        entry: log('sso'),
+                        invoke: {
+                            src: "performSsoLogin",
                             onDone: {target: "authorized", actions: "onSuccess"},
                             onError: {target: "initial", actions: ["onError", "logEventData"]},
                         },

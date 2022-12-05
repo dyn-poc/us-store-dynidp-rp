@@ -99,6 +99,26 @@ export async function performSignin(args) {
     });
 
 }
+export async function performSsoLogin(args) {
+    return new Promise((resolve, reject) => {
+      
+        gigyaWebSDK().sso.login(args, {
+            callback: (response) => {
+                if (response.errorCode === 0) {
+                    resolve(response);
+                } else {
+                    reject(
+                        `Error during login: ${response.errorMessage}, ${response.errorDetails}`
+                    );
+                }
+            }
+
+
+        });
+
+    });
+
+}
 
 export function getJwt(args) {
     return new Promise((resolve, reject) => {

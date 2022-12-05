@@ -27,8 +27,9 @@ import gigyaWebSDK from "../gigya/gigyaWebSDK";
 // import {socialLogin} from "../gigya/gigyaAuthMachine";
 import {asEffect, useActor, useSelector} from "@xstate/react";
 import {Interpreter} from "xstate";
-import {AuthService} from "../machines/authMachine";
+import {AuthService, SSOEvent} from "../machines/authMachine";
 import {ErrorOutlined} from "@material-ui/icons";
+import { Checkbox, MenuItem, Select } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -65,51 +66,26 @@ export interface SignInProps extends RouteComponentProps {
 const loginServiceSelector = (state: any) => state.context;
 export default function SignIn({authService}: SignInProps) {
     const classes = useStyles();
-    const {register, handleSubmit, formState: {errors}} = useForm();
+    const {register, handleSubmit, formState: {errors}} = useForm({
+        defaultValues:{
+            authFlow: "redirect",
+            useChildContext: false,
+            redirectURL: `${window.location.origin}#/afterLogin`
+        }
+    });
     const {message} = useSelector(authService, loginServiceSelector);
 
     // const {loginService} = useSelector(authService, loginServiceSelector);
     const loginService = authService;
+ 
 
-    // const [ state,sendAuth] = useActor(authService.state);
-    // The normal Gigya account login process makes use of
-    // the react-hook-form library
-    const handleLogin = async (data: any) => {
-        const params = {
-            email: data.email,
-            password: data.password,
-        };
-        loginService.send({type: "SUBMIT", ...params})
-
+    const handleSSo = async (data: any) => {
+        loginService.send({type: 'SSO', ...data});
     };
-    const handleRegister = async () => {
-       
-        loginService.send({type: "SIGNUP"})
-
-    };
-
-    const handleFacebookGigyaLogin = () => {
-        loginService.send({type: 'SOCIAL', provider: "facebook"});
-    };
-
-
-    const handleLinkedinGigyaLogin = () => {
-        loginService.send({type: 'SOCIAL', provider: "linkedin"});
-    };
-
 
     const handleGoogleLogin = () => {
         loginService.send({type: 'SOCIAL', provider: "google"});
     };
-
-    const handleOConnectLogin = async () => {
-        loginService.send({type: 'SOCIAL', provider: "oidc-oconnect"});
-    };
-
-    const handleOPublicConnectGigyaLogin = () => {
-        loginService.send({type: 'SOCIAL', provider: "oidc-coolconnect"});
-    };
-
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline/>
@@ -121,34 +97,44 @@ export default function SignIn({authService}: SignInProps) {
                         Sign in
                     </Typography>
                     <form
-                        className={classes.form}
-                        noValidate
-                        onSubmit={handleSubmit(handleLogin)}
+                        className={classes.form} 
+                        onSubmit={handleSubmit(handleSSo)}
                     >
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
+                        <Select
+                            variant="outlined" 
                             required
                             fullWidth
-                            id="email"
-                            label="Email Address"
-                            autoComplete="email"
+                            label="authFlow"
+                            type="authFlow"
+                            id="authFlow"
+                            defaultValue={"redirect"}
+                            autoComplete="authFlow"
+                            {...register("authFlow", {required: true})}
+                        >
+                            <MenuItem key={"redirect"} value={"redirect"}>{"redirect"}</MenuItem>
+                            <MenuItem key={"popup"} value={"popup"}>{"popup"}</MenuItem>
+                        </Select>
+                        {errors && errors.authFlow && <span>Please enter a authFlow</span>}
+                        <TextField
+                            variant="outlined"
+                            margin="normal" 
+                            fullWidth
+                            id="redirectURL"
+                            label="redirect URL"
+                            autoComplete="redirectURL"
                             autoFocus
-                            {...register("email", {required: true})}
+                            {...register("redirectURL" )}
                         />
-                        {errors && errors.email && <span>Please enter an Email address</span>}
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                            {...register("password", {required: true})}
+                        {errors && errors.redirectURL && <span>Please enter a valid redirect URL</span>}
+
+
+                        <Checkbox 
+                            aria-label={"useChildContext"}
+                            id="useChildContext"
+                            autoFocus
+                            {...register("useChildContext" )}
                         />
-                        {errors && errors.password && <span>Please enter a password</span>}
+ 
                         {message &&  <span><ErrorOutlined /> {message}</span>}
                         <Button
                             type="submit"
@@ -157,7 +143,7 @@ export default function SignIn({authService}: SignInProps) {
                             color="primary"
                             className={classes.submit}
                         >
-                            Sign In
+                            Sign In With SSO
                         </Button>
 
                     
@@ -165,18 +151,7 @@ export default function SignIn({authService}: SignInProps) {
 
 
                 </div>
-          
-            {/*  <Button
-                startIcon={<FacebookIcon/>}
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={handleFacebookGigyaLogin}
-            >
-                Sign In With Facebook
-            </Button>
+
             <Button
                 startIcon={<TwitterIcon/>}
                 type="submit"
@@ -188,45 +163,8 @@ export default function SignIn({authService}: SignInProps) {
             >
                 Sign In With Google
             </Button>
-            <Button
-                startIcon={<LinkedInIcon/>}
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={handleLinkedinGigyaLogin}
-            >
-                Sign In With LinkedIn
-            </Button>*/}
-            <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={handleOPublicConnectGigyaLogin}
-            >
-                Sign In With Something Good
-            </Button>
-
-            <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-                onClick={handleOConnectLogin}
-            >
-                Sign In With OConnect
-            </Button>
-            <Grid container justify="flex-start">
-                <Grid item>
-                    <Link  onClick={handleRegister} variant="body2">
-                        {"Don't have an account? Sign Up"}
-                    </Link>
-                </Grid>
-            </Grid>
+           
+          
 
 
         </Container>
