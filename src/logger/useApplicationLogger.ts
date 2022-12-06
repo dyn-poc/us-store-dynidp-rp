@@ -59,8 +59,15 @@ function errorDetails(event: AnyEventObject): Partial<NotificationResponseItem> 
 }
 
 
+function getState(state: AnyState) {
+    return state.toStrings().reverse()[0];
+  /*  let current= state;
+    while(state.toStrings(state.value, ',')){
+        for ()
+    }*/
+}
 
-export function useAppLogger(app: AppService, send: (notification: NotificationsEvents) => {}) {
+export function useAppLogger(app: AnyInterpreter, send: (notification: NotificationsEvents) => {}) {
     useEffect(() => {
         if(app){
             const subscriptions =
@@ -76,7 +83,7 @@ export function useAppLogger(app: AppService, send: (notification: Notifications
 
     return true;
 
-    function subscribeApp(app:AppService, send: (notification: NotificationsEvents) => {}) {
+    function subscribeApp(app:AnyInterpreter, send: (notification: NotificationsEvents) => {}) {
         return app?.subscribe && app.subscribe((state: AnyState) => {
             if (!state || isUpdateType(state)) return;
             console.log(state);
@@ -84,7 +91,7 @@ export function useAppLogger(app: AppService, send: (notification: Notifications
             send({
                 type: "ADD", notification: {
                     id: generateUniqueID(),
-                    title: `${state.value}`,
+                    title: `${getState(state)}`,
                     severity: 'success',
                     group: `${state.machine?.id|| 'default'}`,
                     icon: state.context.app?.logo || 'manage_accounts' ,

@@ -1,11 +1,7 @@
 import React, {useEffect} from "react";
 import {AnyEventObject, AnyState, Interpreter, PayloadSender, StateLike, StateNode, TransitionDefinition} from "xstate";
 import {
-    Button,
-    List,
-    ListItem,
-    ListItemText,
-    Paper,
+    Button, 
     Typography,
     AppBar,
     Box,
@@ -55,7 +51,7 @@ const EventsContainer: React.FC<Props> = ({authService}) => {
                             .filter((event) => !event.startsWith("SSO")  && !event.startsWith("SUBMIT")  && !event.startsWith("REGISTER")&& !event.startsWith("PASSWORD")  && !event.startsWith("SOCIAL"))
                             .map((event) => {
                                 return (
-                                    <Event state={authState} send={sendEvent} type={event}/>
+                                    <Event key={event} state={authState} send={sendEvent} type={event}/>
                                 );
                             })}
 
@@ -77,6 +73,7 @@ export const Event = (props: { type: string, state: AnyState, send: PayloadSende
     //     type: props.children,
     // };
 
+    const them= useTheme();
 
     return (
         <Button
@@ -91,7 +88,7 @@ export const Event = (props: { type: string, state: AnyState, send: PayloadSende
             // To override prose
             style={{margin: 2}}
         >     
-      <Typography variant={"h5"}  className={`font-mono inline-flex flex-wrap font-bold text-sm`}>
+      <Typography   >
         {type.split('.').map((a, index, array) => (
             <span
                 key={index}
@@ -99,8 +96,10 @@ export const Event = (props: { type: string, state: AnyState, send: PayloadSende
                     index === array.length - 1 && 'pr-2'
                 } ${
                     state.nextEvents.includes(type)
-                        ? `bg-yellow-100 text-yellow-800`
-                        : 'bg-gray-100 text-gray-600'
+                        ? them.palette.secondary.contrastText:
+                        them.palette.primary.main
+                        // `bg-yellow-100 text-yellow-800`
+                        // : 'bg-gray-100 text-gray-600'
                 }`}
             >
           {a}

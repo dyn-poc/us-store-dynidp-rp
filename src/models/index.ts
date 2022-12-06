@@ -6,3 +6,7 @@ export * from "./like";
 export * from "./comment";
 export * from "./notification";
 export * from "./banktransfer";
+
+export type AnyRecord ={
+    [key:string]:any
+}

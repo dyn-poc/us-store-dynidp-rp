@@ -15,12 +15,12 @@ import {SnackbarContext, snackbarMachine} from "../machines/snackbarMachine";
 import AlertBar from "../components/AlertBar";
 import {withGigya} from "../machines/withGigya";
 import {notificationMachine} from "../machines/notificationsMachine";
-import NotificationsContainer from "../containers/NotificationsContainer";
 import ProfileContainer from "../containers/ProfileContainer";
 import EventsContainer from "../containers/ActionsContainer";
 import {useInterpretWithLocalStorage} from "../machines/withLocalStorage";
 import { RouteComponentProps ,Router} from "@reach/router";
 import {makeStyles, ThemeProvider } from "@mui/styles";
+import NotificationsContainer from "../containers/NotificationsContainer";
 
 
 declare module '@mui/styles/defaultTheme' {
@@ -92,7 +92,7 @@ const theme = createTheme({
 const App = () => {
 
 
-    const authService = useInterpretWithLocalStorage(() => withGigya(authMachine));
+    const authService = useInterpret(() => withGigya(authMachine));
     // const [,sendAuth , authService] = useMachine(()=>withGigya(authMachine));
     //
     //  const [, , authService] = useMachine(authMachineWithGigya, {
@@ -112,7 +112,7 @@ const App = () => {
         const subscription = authService.subscribe((state: AnyState) => {
             // simple state logging
             console.log(state);
-            showSnackbar({message: state.value.toString(), severity: "info"})
+            showSnackbar({message: state.toStrings().reverse()[0], severity: "info"})
 
         });
 

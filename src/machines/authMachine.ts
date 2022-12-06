@@ -79,7 +79,13 @@ export const authMachine = Machine<AuthMachineContext, AuthMachineSchema, AuthMa
             login: {
                 entry: ['onLoginEntry', 'assignLoginService', log('login')],
                 onDone: [{target: "token.exchange", actions: "setLoginResponse"}],
-             
+                on: {
+                    SUBMIT: ".password",
+                    SOCIAL: ".social",
+                    SIGNUP: ".signup",
+                    SSO: ".sso"
+
+                },
                 states: {
                     initial:{
                         on: {
@@ -209,22 +215,21 @@ export const authMachine = Machine<AuthMachineContext, AuthMachineSchema, AuthMa
                 onDone: [{target: "token.enrich", actions: "setLoginResponse"}],
 
                 on: {
-                    SUBMIT: ".password",
-                    SOCIAL: ".social",
-                    SIGNUP: ".signup"
-                },
-                states: {
-                    social: {
-                        entry: log('social'),
-                        invoke: {
-                            src: "performSocialLogin",
-                            onDone: {target: "authorized", actions: "onSuccess"},
-                            onError: {target: "error", actions: ["onError", "logEventData"]},
-                        },
+                    SUBMIT: {
+                        actions:send({type: "PASSWORD", mode:"reauth"}),
+                        target: "login.password"
+                    },
+                    SOCIAL: {
+                        actions:send({type: "SOCIAL", mode:"reauth", to:"login"}),
+                        target: "login.social"
+                    },
+                    SIGNUP: {
+                        actions:send({type: "SIGNUP", mode:"reauth", to:"login"}),
+                        target: "login.signup"
                     },
                     SSO: {
                         actions:send({type: "SSO", mode:"reauth", to:"login"}),
-                        target: "sso.signup"
+                        target: "login.sso"
                     }
                 }
                  

@@ -11,7 +11,7 @@ export interface NotificationsListProps {
     updateNotification: Function;
 }
 
-const NotificationsList: React.FC<NotificationsListProps> = ({
+export const NotificationsList: React.FC<NotificationsListProps> = ({
                                                                  notifications,
                                                                  updateNotification,
                                                              }) => {
@@ -118,4 +118,4 @@ const NotificationsGroup: React.FC<NotificationsGroupProps> = ({
 };
 
 
-export default NotificationsList;
+ export default NotificationsList;

@@ -1,13 +1,11 @@
 import React, {useEffect} from "react";
-import {AnyEventObject, Interpreter} from "xstate";
 import { Paper, Typography } from "@mui/material";
 import makeStyles from '@mui/styles/makeStyles';
 import {NotificationUpdatePayload} from "../models";
-import NotificationList from "../components/NotificationList";
 import {AuthService} from "../machines/authMachine";
 import {NotificationsService} from "../machines/notificationsMachine";
-import {omit} from "lodash/fp";
 import {useActor} from "@xstate/react";
+import {useAppLogger, NotificationsList} from "../logger";
  
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -26,39 +24,12 @@ export interface Props {
 
 const NotificationsContainer: React.FC<Props> = ({authService, notificationsService}) => {
     const classes = useStyles();
-    // const [authState] = useActor(authService);
     const [notificationsState, sendNotifications] = useActor(notificationsService);
 
-    function getPayload(event: AnyEventObject) {
-       return event.data || omit("type", event);
-    }
 
-    useEffect(() => {
-        authService.onEvent(event => {
-            const payload = getPayload(event);
+    useAppLogger(authService , notificationsService.send );
 
-            sendNotifications({
-                type: "ADD", notification: {
-                    id: generateUniqueID(),
-                    title: event.type,
-                    severity: "info",
-                    payload: payload
-                }
-            })
-        })
-    }, [authService])
-
-    // useEffect(() => {
-    //   sendNotifications({
-    //     type: "ADD", notification: {
-    //       id: "Auth State",
-    //       title: authState.value as string,
-    //       severity:  "info",
-    //       payload: authState
-    //     }
-    //   })
-    // }, [authState]);
-
+   
 
     const updateNotification = (payload: NotificationUpdatePayload) => {
     };
@@ -68,7 +39,7 @@ const NotificationsContainer: React.FC<Props> = ({authService, notificationsServ
             <Typography component="h2" variant="h6" color="primary" gutterBottom>
                 Notifications
             </Typography>
-            <NotificationList
+            <NotificationsList
                 notifications={notificationsState?.context?.notifications!}
                 updateNotification={updateNotification}
             />
