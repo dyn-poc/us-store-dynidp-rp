@@ -123,7 +123,7 @@ export async function performSsoLogin(args) {
 export function getJwt(args) {
     return new Promise((resolve, reject) => {
         gigyaWebSDK().accounts.getJWT({
-            ...args || {},
+            ...(args || {}),
             fields: 'profileField,data.dataField,phone_number,isRegistered,authMethods,email',
             callback: function (res) {
                 if (res.errorCode === 0) {
@@ -141,7 +141,7 @@ export function getJwt(args) {
 export function getAccount(args): Promise<any> {
     return new Promise((resolve, reject) => {
         gigyaWebSDK().accounts.getAccountInfo({
-            ...args || {},
+            ...(args || {}),
             include: "all",
             callback: function (res) {
                 if (res.errorCode === 0) {
@@ -165,7 +165,7 @@ export type SocialLoginParams = SocialPayload & LoginParams
 export const socialLoginAsync = (args: SocialLoginParams) => {
     return new Promise((resolve, reject) => {
         const params = {
-            ...args || {},
+            ...(args || {}),
             include: "all",
             callback: function (res) {
                 if (res.errorCode === 0) {
@@ -181,7 +181,7 @@ export const socialLoginAsync = (args: SocialLoginParams) => {
 }
 export const socialLogin = (args: { provider: string, [key: string]: any }, callback: (res) => {}) => {
     const params = {
-        ...args || {},
+        ...(args || {}),
         include: "all",
         callback: callback
     }
@@ -189,7 +189,7 @@ export const socialLogin = (args: { provider: string, [key: string]: any }, call
 }
 export const startFlow = (args: { provider: string, [key: string]: any }, callback: (res) => {}) => {
     const params = {
-        ...args || {},
+        ...(args || {}),
         include: "all",
         callback: callback
     }
@@ -200,7 +200,7 @@ export const startFlow = (args: { provider: string, [key: string]: any }, callba
 export const logout = (args: AnyRequest = {}) => {
     return new Promise((resolve, reject) => {
         const params = {
-            ...args || {},
+            ...(args || {}),
             callback: function (res) {
                 if (res.errorCode === 0) {
                     resolve(res)

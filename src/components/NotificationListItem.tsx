@@ -7,17 +7,25 @@ import {
     CommentRounded as CommentIcon,
     MonetizationOn as MonetizationOnIcon,
     ExpandMoreOutlined as ExpandMoreIcon
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import {
     Button,
-    makeStyles,
     ListItemIcon,
     ListItemText,
     useTheme,
     useMediaQuery,
     ListItem,
-    IconButton, Accordion, AccordionSummary, AccordionDetails, DialogTitle, DialogContent, DialogActions, Dialog,
-} from "@material-ui/core";
+    IconButton,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Dialog,
+} from "@mui/material";
+
+import makeStyles from '@mui/styles/makeStyles';
 
 import {NotificationResponseItem} from "../models";
 import JsonView from "./JsonTreeViewer";

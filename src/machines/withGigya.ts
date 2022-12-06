@@ -81,7 +81,7 @@ export const withGigya= (authMachine:AuthMachine)=>authMachine.withConfig({
         getUserProfile: async (ctx, event) => {
             const payload = omit("type", event);
             const user = await getAccount(payload);
-            return {user:{ ...user || {}, email: user?.profile?.email}}
+            return {user:{ ...(user || {}), email: user?.profile?.email}};
         },
         performLogout: async (ctx, event) => {
             localStorage.removeItem("authState");

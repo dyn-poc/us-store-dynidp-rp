@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import gigyaWebSDK from "../gigya/gigyaWebSDK";
- import Avatar from "@material-ui/core/Avatar";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
+ import Avatar from "@mui/material/Avatar";
+import makeStyles from '@mui/styles/makeStyles';
+import Button from "@mui/material/Button";
 import { useForm } from "react-hook-form";
 import {Redirect, RouteComponentProps} from "@reach/router";
 import {AuthService} from "../machines/authMachine";
@@ -10,7 +10,7 @@ import {history} from "../utils/historyUtils";
 import {useActor, useSelector} from "@xstate/react";
 import {AnyState} from "xstate";
 import JsonView from "./JsonTreeViewer";
-import {Paper, Typography} from "@material-ui/core";
+import {Paper, Typography} from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
   paper: {

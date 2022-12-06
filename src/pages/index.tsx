@@ -1,29 +1,94 @@
 // import logo from "./logo.svg";
 import React, {useEffect} from "react";
-import "./App.css";
-import "./styles/globals.css";
-import SignIn from "./components/SignIn";
-import SignUp from "./components/SignUp";
-import Profile from "./components/Profile";
-// import {useActor} from "@xstate/react";
-import {authMachine, AuthService} from "./machines/authMachine";
-import {Redirect, RouteComponentProps, Router, useNavigate} from "@reach/router";
+import "./index.css";
+import "../styles/globals.css";
+import SignIn from "../components/SignIn";
+import SignUp from "../components/SignUp";
+import {authMachine, AuthService} from "../machines/authMachine";
+// import {Hash, Router, useNavigate} from "react-router";
+// import { HashRouter as  Router} from "react-router-dom";
+
 import {useActor, useInterpret, useMachine, useSelector} from "@xstate/react";
-import {history} from "./utils/historyUtils";
 import {AnyState, State} from "xstate";
-import {Box, Container, Snackbar} from "@material-ui/core";
-import {SnackbarContext, snackbarMachine} from "./machines/snackbarMachine";
-import AlertBar from "./components/AlertBar";
-import {withGigya} from "./machines/withGigya";
-import {notificationMachine} from "./machines/notificationsMachine";
-import NotificationsContainer from "./containers/NotificationsContainer";
-import ProfileContainer from "./containers/ProfileContainer";
-import EventsContainer from "./containers/ActionsContainer";
-import {useInterpretWithLocalStorage} from "./machines/withLocalStorage";
-import {spacing} from "@material-ui/system";
-import SessionInfo from "./components/Session";
-// const authMachineWithGigya= withGigya(authMachine);
-// const state= stateLocalStorage.get();
+import {Box, Container, createTheme, responsiveFontSizes, Snackbar, StyledEngineProvider, Theme} from "@mui/material";
+import {SnackbarContext, snackbarMachine} from "../machines/snackbarMachine";
+import AlertBar from "../components/AlertBar";
+import {withGigya} from "../machines/withGigya";
+import {notificationMachine} from "../machines/notificationsMachine";
+import NotificationsContainer from "../containers/NotificationsContainer";
+import ProfileContainer from "../containers/ProfileContainer";
+import EventsContainer from "../containers/ActionsContainer";
+import {useInterpretWithLocalStorage} from "../machines/withLocalStorage";
+import { RouteComponentProps ,Router} from "@reach/router";
+import {makeStyles, ThemeProvider } from "@mui/styles";
+
+
+declare module '@mui/styles/defaultTheme' {
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface DefaultTheme extends Theme {
+    }
+}
+
+
+const useStyles = makeStyles((theme) => ({
+    paper: {
+        marginTop: theme.spacing(8),
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        margin: theme.spacing(1)
+    },
+    paperRow: {
+        marginTop: theme.spacing(8),
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        margin: theme.spacing(1)
+    }
+}));
+const theme = createTheme({
+    palette: {
+        // secondary: {
+        //     main: '#999'
+        // },
+        primary: {
+            main: '#7a7a7a'
+        }
+
+    },
+
+    typography: {
+        h5: {
+            font: 'Questrial',
+            fontStyle: 'lighter',
+            fontWeight: 'lighter',
+            fontSize: '14px',
+            fontFamily: "'Questrial', sans-serif !important"
+        },
+        button:{
+            font: 'Questrial',
+            fontStyle: 'lighter',
+            fontWeight: 'lighter',
+            fontFamily: "'Questrial', sans-serif !important",
+            fontSize: '14px',
+            opacity: 0.8
+        },
+        fontFamily: [
+            'Questrial',
+            'sans-serif',
+            '-apple-system',
+            'BlinkMacSystemFont',
+            '"Segoe UI"',
+            'Roboto',
+            '"Helvetica Neue"',
+            'Arial',
+
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"',
+        ].join(','),
+    },
+});
 const App = () => {
 
 
@@ -53,12 +118,16 @@ const App = () => {
 
         return subscription.unsubscribe;
     }, [authService]);
+    const responsiveTheme = responsiveFontSizes(theme);
 
     // @ts-ignore
     // @ts-ignore
     return (
         <div>
-            <EventsContainer authService={authService}/>
+            <StyledEngineProvider injectFirst>
+                <ThemeProvider theme={responsiveTheme}>
+
+                <EventsContainer authService={authService}/>
             <Box
                 sx={{
                     display: 'flex',
@@ -85,7 +154,8 @@ const App = () => {
 
 
             <AlertBar snackbarService={snackbarService}/>
-
+                </ThemeProvider>
+            </StyledEngineProvider>
         </div>
     );
 };

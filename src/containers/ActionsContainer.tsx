@@ -5,95 +5,69 @@ import {
     List,
     ListItem,
     ListItemText,
-    makeStyles,
     Paper,
     Typography,
     AppBar,
     Box,
-    responsiveFontSizes, createTheme, ThemeProvider
-} from "@material-ui/core";
+    responsiveFontSizes,
+    createTheme,
+    ThemeProvider,
+    Theme,
+    StyledEngineProvider,
+    adaptV4Theme,
+    useTheme,
+} from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import {AuthService} from "../machines/authMachine";
 import {useActor} from "@xstate/react";
 import {EventObject, Sender} from "xstate/lib/types";
 
-const useStyles = makeStyles((theme) => ({
-    paper: {
-        minHeight: "90vh",
-        padding: theme.spacing(2),
-        display: "flex",
-        overflow: "auto",
-        flexDirection: "row",
-    },
 
-    typography: {
-        h5: {
-            font: 'mono',
-            fontStyle:'bold',
-            fontWeight: 'bold'
-        }
-    },
-}));
+declare module '@mui/styles/defaultTheme' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface DefaultTheme extends Theme {}
+}
+
+
+
 
 export interface Props {
     authService: AuthService;
 }
 
 const EventsContainer: React.FC<Props> = ({authService}) => {
-    const classes = useStyles();
     const [authState] = useActor(authService);
 
     const sendEvent = authService.send;
-    let theme = createTheme({
-        typography: {
-            h5: {
-              font: 'mono',
-                fontStyle:'bold',
-                fontWeight: 'bold' 
-            }
-        },
-    });
-    theme = responsiveFontSizes(theme);
+     const them= useTheme();
+    const theme = responsiveFontSizes(them);
 
     return (
         // <div className="bg-white max-w-7xl mx-auto px-4 sm:px-6">
-        <AppBar color="transparent" variant={"outlined"}>
+        <AppBar color="transparent"  variant={"outlined"}>
             <Box sx={{display: 'flex', alignItems: 'center', textAlign: 'center'}}>
-                {/*<div*/}
-                {/*    className="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">*/}
-                <div>
-                    <a href="#">
-                        <span className="sr-only">Workflow</span>
-                        <img
-                            className="h-8 w-auto sm:h-10"
-                            src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-                            alt=""
-                        />
+               
+                <StyledEngineProvider injectFirst>
+                    <ThemeProvider theme={theme}>
 
-                    </a>
+                        {authService.machine.events
+                            .filter((event) => event && !event.startsWith('xstate.') && !event.endsWith('invocation[0]') && !event.startsWith('done.')&& !event.startsWith('error.'))
+                            .filter((event) => !event.startsWith("SSO")  && !event.startsWith("SUBMIT")  && !event.startsWith("REGISTER")&& !event.startsWith("PASSWORD")  && !event.startsWith("SOCIAL"))
+                            .map((event) => {
+                                return (
+                                    <Event state={authState} send={sendEvent} type={event}/>
+                                );
+                            })}
 
-                </div>
-                <ThemeProvider theme={theme}>
-
-                    {authService.machine.events
-                        .filter((event) => event && !event.startsWith('xstate.') && !event.endsWith('invocation[0]') && !event.startsWith('done.')&& !event.startsWith('error.'))
-                        .filter((event) => !event.startsWith("SUBMIT")  && !event.startsWith("REGISTER")&& !event.startsWith("PASSWORD")  && !event.startsWith("SOCIAL"))
-                        .map((event) => {
-                            return (
-                                <Event state={authState} send={sendEvent} type={event}/>
-                            );
-                        })}
-
-                </ThemeProvider>
+                    </ThemeProvider>
+                </StyledEngineProvider>
              </Box>
         </AppBar>
-
-
     );
 };
 
 export const Event = (props: { type: string, state: AnyState, send: PayloadSender<any> }) => {
     // const {flyJson} = useFlyPane(); 
-    const classes = useStyles();
 
     const {state, send, type} = props;
     const defaultEvent = state.meta?.eventPayloads?.[type] || {};

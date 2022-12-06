@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DialogProps, Button, Dialog , DialogActions,DialogContent, DialogTitle} from "@material-ui/core";
+import { DialogProps, Button, Dialog , DialogActions,DialogContent, DialogTitle} from "@mui/material";
 import {ReactNode} from "react";
 
 export interface ScrollDialogProps { 

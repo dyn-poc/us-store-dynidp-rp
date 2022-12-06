@@ -1,14 +1,14 @@
 import React, {useEffect} from "react";
 import {AnyEventObject, Interpreter} from "xstate";
-import {makeStyles, Paper, Typography} from "@material-ui/core";
+import { Paper, Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import {NotificationUpdatePayload} from "../models";
 import NotificationList from "../components/NotificationList";
 import {AuthService} from "../machines/authMachine";
 import {NotificationsService} from "../machines/notificationsMachine";
 import {omit} from "lodash/fp";
 import {useActor} from "@xstate/react";
-import {generateUniqueID} from "web-vitals/dist/modules/lib/generateUniqueID";
-
+ 
 const useStyles = makeStyles((theme) => ({
     paper: {
         minHeight: "90vh",
@@ -77,3 +77,9 @@ const NotificationsContainer: React.FC<Props> = ({authService, notificationsServ
 };
 
 export default NotificationsContainer;
+function generateUniqueID() {
+    // Math.random should be unique because of its seeding algorithm.
+    // Convert it to base 36 (numbers + letters), and grab the first 9 characters
+    // after the decimal.
+    return '_' + Math.random().toString(36).substr(2, 9);
+}
