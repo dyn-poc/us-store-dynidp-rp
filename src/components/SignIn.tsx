@@ -5,29 +5,14 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import makeStyles from '@mui/styles/makeStyles';
 import Container from "@mui/material/Container";
 import {useForm} from "react-hook-form";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import TwitterIcon from "@mui/icons-material/Twitter";
-import {
-    yahooGigyaLogin,
-    linkedinGigyaLogin,
-    facebookGigyaLogin,
-    twitterGigyaLogin, googleGigyaLogin, opublicConnectGigyaLogin, oconnectGigyaLogin,
-} from "../gigya/gigyaWebSDK";
-import gigyaWebSDK from "../gigya/gigyaWebSDK";
-// import {useService} from "@xstate/react";
-// import {socialLogin} from "../gigya/gigyaAuthMachine";
-import {asEffect, useActor, useSelector} from "@xstate/react";
-import {Interpreter} from "xstate";
-import {AuthService, SSOEvent} from "../machines/authMachine";
+import { useSelector} from "@xstate/react";
+import {AuthService} from "../machines/authMachine";
 import {ErrorOutlined} from "@mui/icons-material";
 import { Checkbox, MenuItem, Select } from "@mui/material";
 

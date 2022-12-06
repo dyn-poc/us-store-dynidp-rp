@@ -1,13 +1,8 @@
-import React, {useRef, useState} from "react";
-
+import React, {useState} from "react";
+import {ErrorBoundary} from '../components/ErrorBoundary'
 import {
-    Check as CheckIcon,
-    ThumbUpAltOutlined as LikeIcon,
-    Payment as PaymentIcon,
-    CommentRounded as CommentIcon,
-    MonetizationOnOutlined as MonetizationOnIcon,
-    ExpandMoreOutlined as ExpandMoreIcon
-
+     MonetizationOnOutlined as MonetizationOnIcon,
+ 
 } from "@mui/icons-material";
 import {
     Button,
@@ -127,33 +122,5 @@ const NotificationListItem: React.FC<NotificationListItemProps> = ({
     );
 };
 
-export class ErrorBoundary extends React.Component<React.PropsWithChildren<{ data?: any }>, { hasError: boolean, error?: string }> {
-    constructor(props: React.PropsWithChildren) {
-        super(props);
-        this.state = {hasError: false, error: undefined};
-    }
-
-    static getDerivedStateFromError(error: any) {
-        // Update state so the next render will show the fallback UI.
-        return {hasError: true, error: error};
-    }
-
-    componentDidCatch(error: any, errorInfo: any) {
-        // You can also log the error to an error reporting service
-        // console.error(error, errorInfo);
-        console.error("failed to load data", this.props.data);
-    }
-
-    render(element: JSX.Element) {
-        if (this.state.hasError) {
-            // You can render any custom fallback UI
-            return <div>
-                <h1>Something went wrong.</h1>
-            </div>
-        }
-
-        return this.props.children;
-    }
-}
-
+ 
 export default NotificationListItem;
