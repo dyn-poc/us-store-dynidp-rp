@@ -1,4 +1,4 @@
-import {Machine, assign, InterpreterFrom, actions} from "xstate";
+import {Machine, assign, InterpreterFrom, actions, send} from "xstate";
 import {User, IdToken} from "../models";
 import {
     logout,
@@ -29,7 +29,7 @@ export interface SocialPayload {
 export type SocialEvent = SocialPayload & { type: "SOCIAL" };
 export type SSOEvent =  { type: "SSO", authFlow: 'redirect' | 'popup', redirectURL?: string, context?: {[key:string]:any}, useChildContext?: boolean };
 export type AuthMachineEvents =
-    | { type: "LOGIN" }
+    | { type: "LOGIN" , [key:string]: any}
     | SocialEvent
     | SSOEvent
     | { type: "LOGOUT" }
@@ -66,15 +66,14 @@ export const authMachine = Machine<AuthMachineContext, AuthMachineSchema, AuthMa
             message: undefined 
 
         },
-      
+
       
         states: {
             unauthorized: {
                 entry: ["resetUser", "onUnauthorizedEntry", log('unauthorized')],
                 on: {
                     LOGIN: "login.initial",
-                    SIGNUP: "login.signup",
-                    SSO: "login.sso"
+                    SIGNUP: "login.signup"
                 },
             },
             login: {
@@ -86,7 +85,9 @@ export const authMachine = Machine<AuthMachineContext, AuthMachineSchema, AuthMa
                         on: {
                             SUBMIT: "password",
                             SOCIAL: "social",
-                            SIGNUP: "signup"
+                            SIGNUP: "signup",
+                            SSO: "sso"
+
                         }
                     },
                     social: {
@@ -221,34 +222,12 @@ export const authMachine = Machine<AuthMachineContext, AuthMachineSchema, AuthMa
                             onError: {target: "error", actions: ["onError", "logEventData"]},
                         },
                     },
-                    password: {
-                        invoke: {
-                            src: "performLogin",
-                            onDone: {target: "authorized", actions: "onSuccess"},
-                            onError: {target: "error", actions: ["onError", "logEventData"]},
-                        }
-                    },
-                    signup: {
-                        entry: log('signup'),
-
-                        invoke: {
-                            src: "performSignup",
-                            onDone: {target: "authorized", actions: "onSuccess"},
-                            onError: {target: "error", actions: ["onError", "logEventData"]},
-                        },
-                    },
-
-                    authorized: {
-                        entry: [log("authorized"), "onAuthorizedEntry"],
-                        type: "final"
-
-                    },
-                    error: {
-                        entry: [log("authorized"), "onAuthorizedEntry"],
-                        type: "final"
-
+                    SSO: {
+                        actions:send({type: "SSO", mode:"reauth", to:"login"}),
+                        target: "sso.signup"
                     }
-                },
+                }
+                 
 
 
             },
