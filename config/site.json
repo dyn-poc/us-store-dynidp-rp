@@ -1,5 +1,5 @@
 {
-    "menu_description": "CDC Starter Kit",
+    "menu_description": "CDC Starter CLP",
     "site_title": "SAP Customer Data Cloud Starter Kit",
     "site_description": "Sample Site with basic Customer Data Cloud capabilities",
     "menu_bg_color": "white",
@@ -8,9 +8,9 @@
     "text_color": "#7a7a7a",
     "background_color": "#f4f4f4",
     "menu_pic": "sap.png",
-    "main_url": "/us-store-dynidp-rp/",
+    "main_url": "https://store.us.dynidp.com/",
     "main_pic": "sap.png",
     "raas_prefix": "Default",
     "lang": "en",
-    "apiKey": "4_DxFqHMTOAJNe9VmFvyO3Uw"
+    "apiKey": "4_05sbXWF-m_U6kjic2-P0Lw"
 }
